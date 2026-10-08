@@ -22,4 +22,5 @@ def count_matrix(data):
     df.to_csv(output_path, sep="\t")
     print(f"Results saved in {output_path}")
 
+
 count_matrix(data_path)
