@@ -5,7 +5,7 @@ def run_sc_qc():
     adata.var['mt'] = adata.var_names.str.startswith('MT-')
     num_mt = adata.var['mt'].sum()
     print(f"Number of mitochondrial genes found: {num_mt}")
-    data = sc.pp.calculate_qc_metrics(adata, qc_vars=['mt'], percent_top=None, log1p=False, inplace=True)
+    sc.pp.calculate_qc_metrics(adata, qc_vars=['mt'], percent_top=None, log1p=False, inplace=True)
     initial_cells = adata.n_obs
 
     cell_mask = (
