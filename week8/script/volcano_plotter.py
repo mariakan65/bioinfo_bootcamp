@@ -3,11 +3,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent.parent
+DATA_DIR = REPO_ROOT / 'week7'/'data'
+data_file = DATA_DIR / 'fdr_results.tsv'
 
-data_file = Path("C:/Users/user/bioinfo_bootcamp/week7/data/fdr_results.tsv")
+
 
 def plot_volcano(file):
-    df = pd.read_csv(file, sep="\t", index_col=0)
+    file_path = Path(file)
+    if not file_path.exists():
+        print(f'File {file_path} does not exist!')
+        return
+    df = pd.read_csv(file_path, sep="\t", index_col=0)
     df["neg_log10_padj"] = -np.log10(df["p_adjusted"])
     plt.figure(figsize = (12,8))
     up = df[(df["p_adjusted"] < 0.05) & (df["log2FC"] >= 1.0)]
@@ -32,10 +40,11 @@ def plot_volcano(file):
     plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', frameon=True)
     plt.grid(True, linestyle=":", alpha=0.5)
 
-    output_img = file.parent.parent.parent / "week8" / "data" / "volcano_plot.png"
+    output_img = file_path.parent.parent.parent / "week8" / "data" / "volcano_plot.png"
     output_img.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_img, dpi=300, bbox_inches='tight')
     print("Volcano plotting complete")
     plt.close()
 
-plot_volcano(data_file)
+if __name__ == "__main__":
+    plot_volcano(data_file)

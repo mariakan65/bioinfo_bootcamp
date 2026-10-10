@@ -1,4 +1,8 @@
 import scanpy as sc
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_DIR = SCRIPT_DIR.parent / 'data'
 
 def run_sc_qc():
     adata = sc.datasets.pbmc3k()
@@ -21,10 +25,11 @@ def run_sc_qc():
     print(f"Clean cells filtered for analysis: {adata_filtered.n_obs}")
 
 
-    output_path = "C:/Users/user/bioinfo_bootcamp/week9/data/pbmc3k_clean.h5ad"
+    output_path = DATA_DIR / "pbmc3k_clean.h5ad"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     adata_filtered.write(output_path)
     print(f"\nDataset saved to: {output_path}")
 
-
-run_sc_qc()
+if __name__ == "__main__":
+    run_sc_qc()
 

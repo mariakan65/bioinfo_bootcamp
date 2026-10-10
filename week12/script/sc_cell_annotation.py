@@ -1,12 +1,16 @@
 import scanpy as sc
 from pathlib import Path
 
-file_path = Path("C:/Users/user/bioinfo_bootcamp/week9/data/pbmc3k_clean.h5ad")
-
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_DIR = SCRIPT_DIR.parent.parent / 'week9' / 'data'
+data_path = DATA_DIR / 'pbmc3k_clean.h5ad'
 
 def run_cell_annotation(file):
-
-    adata = sc.read_h5ad(file)
+    file_path = Path(file)
+    if not file_path.exists():
+        print(f"File {file_path} does not exist")
+        return
+    adata = sc.read_h5ad(file_path)
 
     print("Normalization, Log1p, HVGs, Scale, PCA")
     sc.pp.normalize_total(adata, target_sum=1e4)
@@ -47,4 +51,4 @@ def run_cell_annotation(file):
 
 
 if __name__ == "__main__":
-    run_cell_annotation(file_path)
+    run_cell_annotation(data_path)

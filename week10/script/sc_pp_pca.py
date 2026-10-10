@@ -1,7 +1,15 @@
 import scanpy as sc
-file_path = ("C:/Users/user/bioinfo_bootcamp/week9/data/pbmc3k_clean.h5ad")
+from pathlib import Path
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_DIR = SCRIPT_DIR.parent.parent/ "week9" / "data"
+data_path = DATA_DIR  / "pbmc3k_clean.h5ad"
+
 def run_normalization_pca(file):
-    adata = sc.read_h5ad(file)
+    file_path = Path(file)
+    if not file_path.exists():
+        print(f"File {file_path} does not exist")
+        return
+    adata = sc.read_h5ad(file_path)
     sc.pp.normalize_total(adata, target_sum=1e4)
     sc.pp.log1p(adata)
     sc.pp.highly_variable_genes(adata, min_mean=0.0125, max_mean=3, min_disp=0.5)
@@ -9,4 +17,5 @@ def run_normalization_pca(file):
     sc.tl.pca(adata, svd_solver='arpack')
     print(adata.var['highly_variable'].sum())
 
-run_normalization_pca(file_path)
+if __name__ == "__main__":
+    run_normalization_pca(data_path)

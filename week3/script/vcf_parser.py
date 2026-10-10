@@ -1,6 +1,11 @@
 import vcfpy
+from pathlib import Path
 
-reader = vcfpy.Reader.from_path("C://Users/user/bioinfo_bootcamp/week3/data/sample.vcf")
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_DIR = SCRIPT_DIR / "data"
+input_vcf = DATA_DIR / "input.vcf"
+
+reader = vcfpy.Reader.from_path(input_vcf)
 total_variants = 0
 snps = 0
 indels = 0

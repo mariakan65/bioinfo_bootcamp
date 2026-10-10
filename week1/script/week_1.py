@@ -5,7 +5,7 @@ DATA_DIR = SCRIPT_DIR.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 
-file_path = DATA_DIR / "reads_1.fastq"
+file = DATA_DIR / "reads_1.fastq"
 
 
 fastq_content = """@SRR001.1 HWI-ST286:4:1:1:1146 length=35
@@ -30,15 +30,19 @@ ANCCTAAACCCTAAACCCTAAACCCTAAACCCTAA
 #11DFFFFFFGHHHJJJJJJJJJJJJJJJJJJJJJ
 """
 
-with open(file_path, "w") as f:
+with open(file, "w") as f:
     f.write(fastq_content.strip())
 
-print(f"Local file {file_path.name} successfully created at {DATA_DIR}!")
-def parse_fastq(filepath):
-    filepath = Path(filepath)
+print(f"Local file {file.name} successfully created at {DATA_DIR} !")
+
+def parse_fastq(fastq):
+    file_path = Path(fastq)
+    if not file_path.exists():
+        print(f"Error: File not found at {file_path}")
+        return
     reads = 0
     bases = 0
-    with open(filepath, "r") as f:
+    with open(file_path, "r") as f:
         for i, line in enumerate(f):
             if i % 4 == 1:
                 reads += 1
@@ -48,5 +52,5 @@ def parse_fastq(filepath):
     print(f"Total bases: {bases}")
     print(f"Average bases: {average_bases}")
 
-
-parse_fastq(file_path)
+if __name__ == "__main__":
+    parse_fastq(file)

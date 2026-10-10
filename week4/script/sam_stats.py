@@ -1,7 +1,15 @@
 from Bio import Align
 from pathlib import Path
 
-def analyze_sam(sam_path):
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_DIR = SCRIPT_DIR.parent / 'data'
+sam_file = DATA_DIR / 'sample.sam'
+
+def analyze_sam(sam):
+    sam_path = Path(sam)
+    if not sam_path.exists():
+        print(f'{sam} does not exist')
+        return
     unmapped_reads = 0
     mapped_reads = 0
     total_reads = 0
@@ -21,8 +29,8 @@ def analyze_sam(sam_path):
     print(f"SAM file analysis completed! Total reads: {total_reads}\nMapped reads: {mapped_reads}\nUnmapped reads: "
               f"{unmapped_reads}\nHigh Quality mappings(QR Score >=30): {hq_mappings}")
 
+if  __name__ == "__main__":
+    analyze_sam(sam_file)
 
 
-sam_file = Path("C://Users/user/bioinfo_bootcamp/week4/data/sample.sam")
-analyze_sam(sam_file)
 
