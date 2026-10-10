@@ -1,11 +1,18 @@
 from Bio import SeqIO
 from pathlib import Path
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_DIR = SCRIPT_DIR.parent / "data"
+input_file = DATA_DIR / "filtered_reads.fastq"
+
 reference = "AGCTTAGCTAGCTAGCGATCGATCGATCGATCCGATCGATCGAT"
 
 def find_sequence(ref_sequence, input_fastq):
     input_path = Path(input_fastq)
     matches = []
+    if not input_path.exists():
+        print(f"Error:File not found at {input_path})
+        return matches
     for record in SeqIO.parse(input_path, "fastq"):
         seq = str(record.seq)
         match_position = ref_sequence.find(seq)
@@ -16,9 +23,9 @@ def find_sequence(ref_sequence, input_fastq):
                 "sequence": seq
             })
     return matches
-input_file = Path("C:/Users/user/bioinfo_bootcamp/week2/data/filtered_reads.fastq")
 
-results = find_sequence(reference, input_file)
-print(f"Found {len(results)} sequences in {input_file}")
-for result in results:
-    print(f"Read ID: {result['read_id']} | Position: {result['position']}")
+if __name__ == "__main__":
+    results = find_sequence(reference, input_file)
+    print(f"Found {len(results)} matching sequences in {input_file.name}")
+    for result in results:
+        print(f"Read ID: {result['read_id']} | Position: {result['position']}")
