@@ -1,9 +1,11 @@
 from pathlib import Path
 
-data_dir = Path("C:/Users/user/bioinfo_bootcamp/week1/data")
-data_dir.mkdir(parents=True, exist_ok=True)
+SCRIPT_DIR = Path(__file__).resolve().parent
+DATA_DIR = SCRIPT_DIR.parent / "data"
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-file_path = data_dir / "reads_1.fastq"
+
+file_path = DATA_DIR / "reads_1.fastq"
 
 
 fastq_content = """@SRR001.1 HWI-ST286:4:1:1:1146 length=35
@@ -31,7 +33,7 @@ ANCCTAAACCCTAAACCCTAAACCCTAAACCCTAA
 with open(file_path, "w") as f:
     f.write(fastq_content.strip())
 
-print("Local file reads_1.fastq successfully created!")
+print(f"Local file {file_path.name} successfully created at {DATA_DIR}!")
 def parse_fastq(filepath):
     filepath = Path(filepath)
     reads = 0
@@ -46,5 +48,5 @@ def parse_fastq(filepath):
     print(f"Total bases: {bases}")
     print(f"Average bases: {average_bases}")
 
-data_dir = Path("C:/Users/user/bioinfo_bootcamp/week1/data")
-parse_fastq(data_dir / "reads_1.fastq")
+
+parse_fastq(file_path)
